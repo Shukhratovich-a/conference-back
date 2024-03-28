@@ -5,7 +5,7 @@ export class CreateArticleDto {
   title: string;
 
   @IsNumber()
-  topicId: number;
+  sectionId: number;
 
   @IsString()
   @IsOptional()

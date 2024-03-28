@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 
 import { UserEntity } from "@modules/user/user.entity";
-import { TopicEntity } from "@modules/topic/topic.entity";
+import { SectionEntity } from "@modules/section/section.entity";
 
 @Entity("articles")
 export class ArticleEntity extends BaseEntity {
@@ -29,9 +29,9 @@ export class ArticleEntity extends BaseEntity {
   @Column({ name: "file", type: "varchar", nullable: true })
   file?: string;
 
-  @ManyToOne(() => TopicEntity, { nullable: false })
-  @JoinColumn({ name: "topic_id" })
-  topic: TopicEntity;
+  @ManyToOne(() => SectionEntity, { nullable: false })
+  @JoinColumn({ name: "section_id" })
+  section: SectionEntity;
 
   @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: "user_id" })

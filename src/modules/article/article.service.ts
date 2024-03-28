@@ -18,7 +18,7 @@ export class ArticleService {
 
   // FIND
   async findAll() {
-    return this.articleRepository.find({ relations: { user: true, topic: true } });
+    return this.articleRepository.find({ relations: { user: true, section: true } });
   }
 
   async findById(id: number) {
@@ -41,8 +41,10 @@ export class ArticleService {
   }
 
   // CREATE
-  async create({ userId, topicId, ...dto }: CreateArticleDto) {
-    return this.articleRepository.save(this.articleRepository.create({ ...dto, user: { id: userId }, topic: { id: topicId } }));
+  async create({ userId, sectionId, ...dto }: CreateArticleDto) {
+    return this.articleRepository.save(
+      this.articleRepository.create({ ...dto, user: { id: userId }, section: { id: sectionId } }),
+    );
   }
 
   // UPDATE

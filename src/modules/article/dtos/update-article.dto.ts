@@ -7,7 +7,7 @@ export class UpdateArticleDto {
 
   @IsNumber()
   @IsOptional()
-  topicId?: number;
+  sectionId?: number;
 
   @IsString()
   @IsOptional()
