@@ -10,6 +10,7 @@ async function bootstrap() {
 
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.setGlobalPrefix("not-for-users/backend");
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
