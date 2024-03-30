@@ -5,7 +5,7 @@ export class HomepageDto {
   id: number;
 
   @Exclude()
-  title: string;
+  mainText: string;
 
   @Expose()
   createAt: Date;

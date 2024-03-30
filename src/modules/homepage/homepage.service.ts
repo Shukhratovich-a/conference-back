@@ -39,7 +39,7 @@ export class HomepageService {
   parse(section: HomepageEntity, language: LanguageEnum) {
     const newSection: HomepageDto = plainToClass(HomepageDto, section, { excludeExtraneousValues: true });
 
-    newSection.title = section[`title${capitalize(language)}`];
+    newSection.mainText = section[`mainText${capitalize(language)}`];
 
     return newSection;
   }
