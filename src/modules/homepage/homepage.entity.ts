@@ -6,6 +6,18 @@ export class HomepageEntity extends BaseEntity {
   @PrimaryColumn({ name: "id", type: "int", default: 1, nullable: false })
   id: 1;
 
+  @Column({ name: "poster", type: "varchar", default: "" })
+  poster: string;
+
+  @Column({ name: "title_en", type: "varchar", default: "" })
+  titleEn: string;
+
+  @Column({ name: "title_ru", type: "varchar", default: "" })
+  titleRu: string;
+
+  @Column({ name: "title_uz", type: "varchar", default: "" })
+  titleUz: string;
+
   @Column({ name: "main_text_en", type: "varchar", default: "" })
   mainTextEn: string;
 

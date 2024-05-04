@@ -18,16 +18,22 @@ export class HomepageService {
   constructor(@InjectRepository(HomepageEntity) private readonly homepageRepository: Repository<HomepageEntity>) {}
 
   async find(language?: LanguageEnum) {
-    const section = await this.homepageRepository.findOne({ where: { id: 1 } });
-    if (!section) return null;
+    const homepage = await this.homepageRepository.findOne({ where: { id: 1 } });
+    if (!homepage) return null;
 
-    const parsedHomepage: HomepageDto = this.parse(section, language);
+    const parsedHomepage: HomepageDto = this.parse(homepage, language);
 
     return parsedHomepage;
   }
 
   async findWithContents() {
-    return this.homepageRepository.findOne({ where: { id: 1 } });
+    const homepage = await this.homepageRepository.findOne({ where: { id: 1 } });
+
+    if (!homepage) return this.homepageRepository.save({ ...new HomepageEntity(), id: 1 });
+
+    homepage.poster = process.env.HOST + homepage.poster;
+
+    return homepage;
   }
 
   // UPDATE
@@ -36,11 +42,12 @@ export class HomepageService {
   }
 
   // PARSERS
-  parse(section: HomepageEntity, language: LanguageEnum) {
-    const newSection: HomepageDto = plainToClass(HomepageDto, section, { excludeExtraneousValues: true });
+  parse(homepage: HomepageEntity, language: LanguageEnum) {
+    const newHomepage: HomepageDto = plainToClass(HomepageDto, homepage, { excludeExtraneousValues: true });
 
-    newSection.mainText = section[`mainText${capitalize(language)}`];
+    newHomepage.title = homepage[`title${capitalize(language)}`];
+    newHomepage.mainText = homepage[`mainText${capitalize(language)}`];
 
-    return newSection;
+    return newHomepage;
   }
 }

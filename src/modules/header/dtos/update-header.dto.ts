@@ -1,18 +1,9 @@
 import { IsOptional, IsString } from "class-validator";
 
-export class UpdateHomepageDto {
+export class UpdateHeaderDto {
   @IsString()
   @IsOptional()
-  poster: string;
-
-  @IsString()
-  titleEn: string;
-
-  @IsString()
-  titleRu: string;
-
-  @IsString()
-  titleUz: string;
+  logo: string;
 
   @IsString()
   mainTextEn: string;
