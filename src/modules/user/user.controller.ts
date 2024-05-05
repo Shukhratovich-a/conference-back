@@ -15,7 +15,13 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 
+import { ISort } from "@/interfaces/sort.interface";
+import { IPagination } from "@/interfaces/pagination.interface";
+
 import { UserOrAdminJwtGuard } from "@guards/user-admin-jwt.guard";
+import { AdminJwtGuard } from "@/guards/admin-jwt.guard";
+
+import { UserEntity } from "./user.entity";
 
 import { UserService } from "./user.service";
 
@@ -34,22 +40,34 @@ export class UserController {
     return this.userService.findAll(options);
   }
 
-  @UseGuards(UserOrAdminJwtGuard)
   @Get("get-by-id/:id")
+  @UseGuards(UserOrAdminJwtGuard)
   async getById(@Param("id", new ParseIntPipe()) id: number) {
     return this.userService.findById(id);
   }
 
-  @UseGuards(UserOrAdminJwtGuard)
   @Get("get-by-email/:email")
+  @UseGuards(UserOrAdminJwtGuard)
   async getByEmail(@Param() { email }: GetByEmailDto) {
     return this.userService.findByEmail(email);
   }
 
-  @UseGuards(UserOrAdminJwtGuard)
   @Get("get-by-token/:token")
+  @UseGuards(UserOrAdminJwtGuard)
   async getByToken(@Param("token") token: string) {
     return this.userService.findByToken(token);
+  }
+
+  @Get("get-with-count")
+  @UseGuards(AdminJwtGuard)
+  async getAllWithContents(@Query() sort: ISort<keyof UserEntity>, @Query() pagination: IPagination) {
+    return this.userService.findAllWithContents(sort, pagination);
+  }
+
+  @Get("get-with-contents/:id")
+  @UseGuards(AdminJwtGuard)
+  async getOneWithContents(@Param("id", new ParseIntPipe()) id: number) {
+    return this.userService.findOneWithContents(id);
   }
 
   // POST
@@ -61,8 +79,8 @@ export class UserController {
     return this.userService.create(dto);
   }
 
-  @HttpCode(HttpStatus.OK)
   @Post("login")
+  @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginDto) {
     const { email, id } = await this.userService.validateUser(dto);
 
@@ -70,8 +88,8 @@ export class UserController {
   }
 
   // PUT
-  @UseGuards(UserOrAdminJwtGuard)
   @Put("update/:id")
+  @UseGuards(UserOrAdminJwtGuard)
   async update(@Param("id", new ParseIntPipe()) id: number, @Body() userDto: UpdateUserDto) {
     const user = await this.userService.findById(id);
     if (!user) throw new BadRequestException("not found");
@@ -80,8 +98,8 @@ export class UserController {
   }
 
   // DELETE
-  @UseGuards(UserOrAdminJwtGuard)
   @Delete("delete/:id")
+  @UseGuards(UserOrAdminJwtGuard)
   async delete(@Param("id", new ParseIntPipe()) id: number) {
     const user = await this.userService.findById(id);
     if (!user) throw new BadRequestException("not found");
