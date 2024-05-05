@@ -1,8 +1,10 @@
-import { Controller, Get, Put, Body, Query } from "@nestjs/common";
+import { Controller, Get, Put, Body, Query, UseGuards } from "@nestjs/common";
 
 import { LanguageEnum } from "@/enums/language.enum";
 
 import { EnumValidationPipe } from "@/pipes/enum-validation.pipe";
+
+import { AdminJwtGuard } from "@/guards/admin-jwt.guard";
 
 import { HeaderService } from "./header.service";
 
@@ -19,13 +21,14 @@ export class HeaderController {
   }
 
   @Get("get-with-contents")
+  @UseGuards(AdminJwtGuard)
   async getWithContents() {
     return this.headerService.findWithContents();
   }
 
   // PUT
-  // @UseGuards(JwtGuard)
   @Put("update")
+  @UseGuards(AdminJwtGuard)
   async update(@Body() dto: UpdateHeaderDto) {
     return this.headerService.update(dto);
   }
