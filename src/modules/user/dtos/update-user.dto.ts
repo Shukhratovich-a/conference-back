@@ -23,6 +23,14 @@ export class UpdateUserDto {
   @IsString()
   specialty: string;
 
+  @IsString()
+  @IsOptional()
+  description: string;
+
+  @IsString()
+  @IsOptional()
+  image: string;
+
   @IsOptional()
   @IsString()
   country: string;
