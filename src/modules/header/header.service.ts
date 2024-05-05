@@ -18,8 +18,8 @@ export class HeaderService {
   constructor(@InjectRepository(HeaderEntity) private readonly headerRepository: Repository<HeaderEntity>) {}
 
   async find(language?: LanguageEnum) {
-    const header = await this.headerRepository.findOne({ where: { id: 1 } });
-    if (!header) return null;
+    let header = await this.headerRepository.findOne({ where: { id: 1 } });
+    if (!header) header = await this.headerRepository.save({ id: 1 });
 
     const parsedHeader: HeaderDto = this.parse(header, language);
 
@@ -28,7 +28,6 @@ export class HeaderService {
 
   async findWithContents() {
     const header = await this.headerRepository.findOne({ where: { id: 1 } });
-
     if (!header) return this.headerRepository.save({ id: 1 });
 
     header.logo = process.env.HOST + header.logo;

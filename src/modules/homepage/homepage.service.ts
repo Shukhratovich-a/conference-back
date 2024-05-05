@@ -18,8 +18,8 @@ export class HomepageService {
   constructor(@InjectRepository(HomepageEntity) private readonly homepageRepository: Repository<HomepageEntity>) {}
 
   async find(language?: LanguageEnum) {
-    const homepage = await this.homepageRepository.findOne({ where: { id: 1 } });
-    if (!homepage) return null;
+    let homepage = await this.homepageRepository.findOne({ where: { id: 1 } });
+    if (!homepage) homepage = await this.homepageRepository.save({ id: 1 });
 
     const parsedHomepage: HomepageDto = this.parse(homepage, language);
 
@@ -28,8 +28,7 @@ export class HomepageService {
 
   async findWithContents() {
     const homepage = await this.homepageRepository.findOne({ where: { id: 1 } });
-
-    if (!homepage) return this.homepageRepository.save({ ...new HomepageEntity(), id: 1 });
+    if (!homepage) return this.homepageRepository.save({ id: 1 });
 
     homepage.poster = process.env.HOST + homepage.poster;
 
