@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Put, Delete, Body, Query, Param, ParseIntPipe, BadRequestException } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Query,
+  Param,
+  ParseIntPipe,
+  BadRequestException,
+  UseGuards,
+} from "@nestjs/common";
 
 import { IPagination } from "@/interfaces/pagination.interface";
 import { LanguageEnum } from "@/enums/language.enum";
@@ -9,6 +21,7 @@ import { SectionService } from "./section.service";
 
 import { CreateSectionDto } from "./dtos/create-section.dto";
 import { UpdateSectionDto } from "./dtos/update-section.dto";
+import { AdminJwtGuard } from "@/guards/admin-jwt.guard";
 
 @Controller("section")
 export class SectionController {
@@ -22,31 +35,33 @@ export class SectionController {
     return this.sectionService.findAll(language);
   }
 
-  @Get("get-with-count")
-  async getWithCount(@Query() { page, limit }: IPagination) {
-    return this.sectionService.findWithCount({ page, limit });
-  }
-
   @Get("get-by-id/:id")
   async getById(@Param("id", new ParseIntPipe()) id: number) {
     return this.sectionService.findById(id);
   }
 
+  @Get("get-with-count")
+  @UseGuards(AdminJwtGuard)
+  async getWithCount(@Query() { page, limit }: IPagination) {
+    return this.sectionService.findWithCount({ page, limit });
+  }
+
   @Get("get-with-contents/:id")
+  @UseGuards(AdminJwtGuard)
   async getWithContents(@Param("id", new ParseIntPipe()) id: number) {
     return this.sectionService.findWithContents(id);
   }
 
   // POST
-  // @UseGuards(JwtGuard)
   @Post("create")
+  @UseGuards(AdminJwtGuard)
   async create(@Body() dto: CreateSectionDto) {
     return this.sectionService.create(dto);
   }
 
   // PUT
-  // @UseGuards(JwtGuard)
   @Put("update/:id")
+  @UseGuards(AdminJwtGuard)
   async update(@Param("id", new ParseIntPipe()) id: number, @Body() dto: UpdateSectionDto) {
     const section = await this.sectionService.findById(id);
     if (!section) throw new BadRequestException("not found");
@@ -55,8 +70,8 @@ export class SectionController {
   }
 
   // DELETE
-  // @UseGuards(JwtGuard)
   @Delete("delete/:id")
+  @UseGuards(AdminJwtGuard)
   async delete(@Param("id", new ParseIntPipe()) id: number) {
     const section = await this.sectionService.findById(id);
     if (!section) throw new BadRequestException("not found");
