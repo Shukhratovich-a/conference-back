@@ -31,6 +31,16 @@ export class AdminService {
     return this.adminRepository.findOne({ where: { username } });
   }
 
+  async findByToken(token: string) {
+    try {
+      const { username } = await this.jwtService.verifyAsync(token);
+
+      return this.findByUsername(username);
+    } catch {
+      throw new UnauthorizedException();
+    }
+  }
+
   // CREATE
   async create(dto: CreateAdminDto) {
     const salt = await genSalt(10);
