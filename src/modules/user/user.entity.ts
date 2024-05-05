@@ -29,6 +29,9 @@ export class UserEntity extends BaseEntity {
   @Column({ name: "description", type: "varchar", nullable: true })
   description: string;
 
+  @Column({ name: "image", type: "varchar", nullable: true })
+  image: string;
+
   @Column({ name: "country", type: "varchar" })
   country: string;
 
@@ -43,9 +46,6 @@ export class UserEntity extends BaseEntity {
 
   @Column({ name: "phone", type: "varchar" })
   phone: string;
-
-  @Column({ name: "image", type: "varchar", nullable: true })
-  image: string;
 
   @Column({ name: "email", type: "varchar", unique: true })
   email: string;
