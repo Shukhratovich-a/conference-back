@@ -26,26 +26,33 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   // GET
-  @UseGuards(AdminJwtGuard)
   @Get("get-all")
+  @UseGuards(AdminJwtGuard)
   async getAll() {
     return this.adminService.findAll();
   }
 
-  @UseGuards(AdminJwtGuard)
   @Get("get-by-id/:id")
+  @UseGuards(AdminJwtGuard)
   async getById(@Param("id", new ParseIntPipe()) id: number) {
     return this.adminService.findById(id);
   }
 
-  @UseGuards(AdminJwtGuard)
   @Get("get-by-username/:username")
+  @UseGuards(AdminJwtGuard)
   async getByUsername(@Param("username") username: string) {
     return this.adminService.findByUsername(username);
   }
 
+  @Get("get-by-token/:token")
+  @UseGuards(AdminJwtGuard)
+  async getByToken(@Param("token") token: string) {
+    return this.adminService.findByToken(token);
+  }
+
   // POST
   @Post("register")
+  @UseGuards(AdminJwtGuard)
   async register(@Body() dto: CreateAdminDto) {
     const oldUser = await this.adminService.findByUsername(dto.username);
     if (oldUser) throw new BadRequestException();
@@ -53,8 +60,8 @@ export class AdminController {
     return this.adminService.create(dto);
   }
 
-  @HttpCode(HttpStatus.OK)
   @Post("login")
+  @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginAdminDto) {
     const { username } = await this.adminService.validateAdmin(dto);
 
@@ -62,8 +69,8 @@ export class AdminController {
   }
 
   // PUT
-  @UseGuards(AdminJwtGuard)
   @Put("update/:id")
+  @UseGuards(AdminJwtGuard)
   async update(@Param("id", new ParseIntPipe()) id: number, @Body() dto: UpdateAdminDto) {
     const user = await this.adminService.findById(id);
     if (!user) throw new BadRequestException("not found");
@@ -72,8 +79,8 @@ export class AdminController {
   }
 
   // DELETE
-  @UseGuards(AdminJwtGuard)
   @Delete("delete/:id")
+  @UseGuards(AdminJwtGuard)
   async delete(@Param("id", new ParseIntPipe()) id: number) {
     const user = await this.adminService.findById(id);
     if (!user) throw new BadRequestException("not found");
