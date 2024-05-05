@@ -60,14 +60,14 @@ export class UserController {
 
   @Get("get-with-count")
   @UseGuards(AdminJwtGuard)
-  async getAllWithContents(@Query() sort: ISort<keyof UserEntity>, @Query() pagination: IPagination) {
-    return this.userService.findAllWithContents(sort, pagination);
+  async getWithCount(@Query() sort: ISort<keyof UserEntity>, @Query() pagination: IPagination) {
+    return this.userService.findWithCount(sort, pagination);
   }
 
   @Get("get-with-contents/:id")
   @UseGuards(AdminJwtGuard)
-  async getOneWithContents(@Param("id", new ParseIntPipe()) id: number) {
-    return this.userService.findOneWithContents(id);
+  async getWithContents(@Param("id", new ParseIntPipe()) id: number) {
+    return this.userService.findWithContents(id);
   }
 
   // POST

@@ -45,7 +45,7 @@ export class UserService {
     }
   }
 
-  async findAllWithContents({ sort = "createAt", order = "asc" }: ISort<keyof UserEntity>, { page = 1, limit = 0 }: IPagination) {
+  async findWithCount({ sort = "createAt", order = "asc" }: ISort<keyof UserEntity>, { page = 1, limit = 0 }: IPagination) {
     const currentOrder = { [sort]: order } as unknown;
 
     const [users, total] = await this.userRepository.findAndCount({
@@ -64,7 +64,7 @@ export class UserService {
     };
   }
 
-  async findOneWithContents(id: number) {
+  async findWithContents(id: number) {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) return null;
 

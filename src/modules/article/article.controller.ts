@@ -56,13 +56,13 @@ export class ArticleController {
 
   @Get("get-with-count")
   @UseGuards(AdminJwtGuard)
-  async getAllWithContents(@Query() sort: ISort<keyof ArticleEntity>, @Query() pagination: IPagination) {
-    return this.articleService.findAllWithContents(sort, pagination);
+  async getWithCount(@Query() sort: ISort<keyof ArticleEntity>, @Query() pagination: IPagination) {
+    return this.articleService.findWithCount(sort, pagination);
   }
 
-  // @Get("get-one-with-contents/:categoryId")
-  // async getOne(@Param("categoryId", new ParseIntPipe()) categoryId: number) {
-  //   return this.categoryService.findOneWithContents(categoryId);
+  // @Get("get-with-contents/:articleId")
+  // async getOne(@Param("articleId", new ParseIntPipe()) articleId: number) {
+  //   return this.articleService.findWithContents(articleId);
   // }
 
   // POST

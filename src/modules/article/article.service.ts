@@ -43,10 +43,7 @@ export class ArticleService {
     }
   }
 
-  async findAllWithContents(
-    { sort = "createAt", order = "asc" }: ISort<keyof ArticleEntity>,
-    { page = 1, limit = 0 }: IPagination,
-  ) {
+  async findWithCount({ sort = "createAt", order = "asc" }: ISort<keyof ArticleEntity>, { page = 1, limit = 0 }: IPagination) {
     let currentOrder = { [sort]: order } as unknown;
     if (sort === "section" || sort === "user") currentOrder = { [sort]: { id: order } };
 
