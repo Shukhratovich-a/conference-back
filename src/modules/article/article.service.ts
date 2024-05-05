@@ -4,6 +4,9 @@ import { JwtService } from "@nestjs/jwt";
 
 import { Repository } from "typeorm";
 
+import { IPagination } from "@/interfaces/pagination.interface";
+import { ISort } from "@/interfaces/sort.interface";
+
 import { ArticleEntity } from "./article.entity";
 
 import { CreateArticleDto } from "./dtos/create-article.dto";
@@ -38,6 +41,30 @@ export class ArticleService {
     } catch {
       throw new UnauthorizedException();
     }
+  }
+
+  async findAllWithContents(
+    { sort = "createAt", order = "asc" }: ISort<keyof ArticleEntity>,
+    { page = 1, limit = 0 }: IPagination,
+  ) {
+    let currentOrder = { [sort]: order } as unknown;
+    if (sort === "section" || sort === "user") currentOrder = { [sort]: { id: order } };
+
+    const [articles, total] = await this.articleRepository.findAndCount({
+      relations: { user: true, section: true },
+      take: limit,
+      skip: (page - 1) * limit,
+      order: currentOrder,
+    });
+    if (!articles) return [];
+
+    return {
+      data: articles.map((article) => {
+        article.file = process.env.HOST + article.file;
+        return article;
+      }),
+      total,
+    };
   }
 
   // CREATE
