@@ -17,8 +17,6 @@ export class AdminJwtStrategy extends PassportStrategy(Strategy, "admin-jwt") {
   }
 
   async validate({ username }: Pick<AdminEntity, "username">) {
-    console.log("username", username);
-
     return username;
   }
 }
