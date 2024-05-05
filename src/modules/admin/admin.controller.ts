@@ -52,7 +52,7 @@ export class AdminController {
 
   // POST
   @Post("register")
-  @UseGuards(AdminJwtGuard)
+  // @UseGuards(AdminJwtGuard)
   async register(@Body() dto: CreateAdminDto) {
     const oldUser = await this.adminService.findByUsername(dto.username);
     if (oldUser) throw new BadRequestException();
