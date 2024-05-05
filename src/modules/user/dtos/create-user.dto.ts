@@ -30,6 +30,10 @@ export class CreateUserDto {
   description: string;
 
   @IsString()
+  @IsOptional()
+  image: string;
+
+  @IsString()
   country: string;
 
   @IsString()
