@@ -18,10 +18,10 @@ export class HeaderService {
   constructor(@InjectRepository(HeaderEntity) private readonly headerRepository: Repository<HeaderEntity>) {}
 
   async find(language?: LanguageEnum) {
-    const section = await this.headerRepository.findOne({ where: { id: 1 } });
-    if (!section) return null;
+    const header = await this.headerRepository.findOne({ where: { id: 1 } });
+    if (!header) return null;
 
-    const parsedHeader: HeaderDto = this.parse(section, language);
+    const parsedHeader: HeaderDto = this.parse(header, language);
 
     return parsedHeader;
   }
@@ -42,11 +42,11 @@ export class HeaderService {
   }
 
   // PARSERS
-  parse(section: HeaderEntity, language: LanguageEnum) {
-    const newSection: HeaderDto = plainToClass(HeaderDto, section, { excludeExtraneousValues: true });
+  parse(header: HeaderEntity, language: LanguageEnum) {
+    const newHeader: HeaderDto = plainToClass(HeaderDto, header, { excludeExtraneousValues: true });
 
-    newSection.mainText = section[`mainText${capitalize(language)}`];
+    newHeader.mainText = header[`mainText${capitalize(language)}`];
 
-    return newSection;
+    return newHeader;
   }
 }
