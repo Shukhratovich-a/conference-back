@@ -5,6 +5,9 @@ import { JwtService } from "@nestjs/jwt";
 import { Repository } from "typeorm";
 import { genSalt, hash, compare } from "bcryptjs";
 
+import { ISort } from "@/interfaces/sort.interface";
+import { IPagination } from "@/interfaces/pagination.interface";
+
 import { UserEntity } from "./user.entity";
 
 import { GetAllDto } from "./dtos/get-user.dto";
@@ -40,6 +43,34 @@ export class UserService {
     } catch {
       throw new UnauthorizedException();
     }
+  }
+
+  async findAllWithContents({ sort = "createAt", order = "asc" }: ISort<keyof UserEntity>, { page = 1, limit = 0 }: IPagination) {
+    const currentOrder = { [sort]: order } as unknown;
+
+    const [users, total] = await this.userRepository.findAndCount({
+      take: limit,
+      skip: (page - 1) * limit,
+      order: currentOrder,
+    });
+    if (!users) return [];
+
+    return {
+      data: users.map((user) => {
+        user.image = process.env.HOST + user.image;
+        return user;
+      }),
+      total,
+    };
+  }
+
+  async findOneWithContents(id: number) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) return null;
+
+    user.image = user.image ? process.env.HOST + user.image : null;
+
+    return user;
   }
 
   // CREATE
