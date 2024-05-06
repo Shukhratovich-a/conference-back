@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 
+import * as sharp from "sharp";
 import { extname, join } from "path";
 import { ensureDir, writeFile } from "fs-extra";
-import sharp from "sharp";
 import { format } from "date-fns";
 
 import { FileElementResponse } from "./dto/file-element.dto";
