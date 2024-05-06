@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 
 import { extname, join } from "path";
 import { ensureDir, writeFile } from "fs-extra";
+import sharp from "sharp";
 import { format } from "date-fns";
 
 import { FileElementResponse } from "./dto/file-element.dto";
@@ -21,5 +22,21 @@ export class FileService {
 
     await writeFile(join(uploadFolder, filename), file.buffer);
     return { url: `/uploads/${dateFolder}/${filename}`, name: file.originalname };
+  }
+
+  async convertToWebp(file: Buffer): Promise<Buffer> {
+    try {
+      const image = sharp(file);
+      const metadata = await image.metadata();
+      const originalWidth = metadata.width;
+
+      if (originalWidth > 3000) {
+        return image.resize({ width: 3000, fit: "contain" }).webp().toBuffer();
+      } else {
+        return image.webp().toBuffer();
+      }
+    } catch (error) {
+      console.error("Error processing image:", error);
+    }
   }
 }

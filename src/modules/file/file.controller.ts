@@ -17,6 +17,17 @@ export class FileController {
     @UploadedFile(new ParseFilePipe())
     file: Express.Multer.File,
   ): Promise<FileElementResponse> {
+    if (file.mimetype.includes("image")) {
+      const buffer = await this.fileService.convertToWebp(file.buffer);
+
+      const save: MFile = new MFile({
+        originalname: `${file.originalname.split(".")[0]}.webp`,
+        buffer,
+      });
+
+      return this.fileService.saveFile(save);
+    }
+
     const saveArray: MFile = new MFile(file);
 
     return this.fileService.saveFile(saveArray);
