@@ -33,7 +33,7 @@ export class ArticleEntity extends BaseEntity {
   @JoinColumn({ name: "section_id" })
   section: SectionEntity;
 
-  @ManyToOne(() => UserEntity, { nullable: false })
+  @ManyToOne(() => UserEntity, { nullable: false, onDelete: "SET NULL" })
   @JoinColumn({ name: "user_id" })
   user: UserEntity;
 
