@@ -4,10 +4,11 @@ import { LanguageEnum } from "@/enums/language.enum";
 
 import { EnumValidationPipe } from "@/pipes/enum-validation.pipe";
 
+import { AdminJwtGuard } from "@/guards/admin-jwt.guard";
+
 import { HomepageService } from "./homepage.service";
 
 import { UpdateHomepageDto } from "./dtos/update-homepage.dto";
-import { AdminJwtGuard } from "@/guards/admin-jwt.guard";
 
 @Controller("homepage")
 export class HomepageController {
