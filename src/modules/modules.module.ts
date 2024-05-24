@@ -10,6 +10,10 @@ import { DateModule } from "./date/date.module";
 import { FeeModule } from "./fee/fee.module";
 import { SponsorModule } from "./sponsor/sponsor.module";
 import { SubmissionModule } from "./submission/submission.module";
+import { AccommodationModule } from "./accommodation/accommodation.module";
+import { ContactModule } from "./contact/contact.module";
+import { ProgramModule } from "./program/program.module";
+import { SocialProgramModule } from "./social-program/social-program.module";
 import { AdminModule } from "./admin/admin.module";
 
 @Module({
@@ -22,6 +26,10 @@ import { AdminModule } from "./admin/admin.module";
     FeeModule,
     SponsorModule,
     SubmissionModule,
+    AccommodationModule,
+    ContactModule,
+    ProgramModule,
+    SocialProgramModule,
     SectionModule,
     ArticleModule,
     AdminModule,
