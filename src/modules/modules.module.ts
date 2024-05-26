@@ -2,6 +2,11 @@ import { Module } from "@nestjs/common";
 
 import { FileModule } from "./file/file.module";
 import { UserModule } from "./user/user.module";
+import { OrganizerModule } from "./organizer/organizer.module";
+import { OrganizerRoleModule } from "./organizer-role/organizer-role.module";
+import { CommitteeModule } from "./committee/committee.module";
+import { CommitteeRoleModule } from "./committee-role/committee-role.module";
+import { SpeakerModule } from "./speaker/speaker.module";
 import { HeaderModule } from "./header/header.module";
 import { HomepageModule } from "./homepage/homepage.module";
 import { SectionModule } from "./section/section.module";
@@ -20,6 +25,11 @@ import { AdminModule } from "./admin/admin.module";
   imports: [
     FileModule,
     UserModule,
+    OrganizerModule,
+    OrganizerRoleModule,
+    CommitteeModule,
+    CommitteeRoleModule,
+    SpeakerModule,
     HeaderModule,
     HomepageModule,
     DateModule,
