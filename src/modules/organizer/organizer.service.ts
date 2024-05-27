@@ -21,7 +21,7 @@ export class OrganizerService {
 
   // FIND
   async findAll(language?: LanguageEnum) {
-    const organizers = await this.organizerRepository.find();
+    const organizers = await this.organizerRepository.find({ relations: { organizerRole: true } });
     if (!organizers) return [];
 
     const parsedOrganizers: OrganizerDto[] = organizers.map((organizer) => this.parse(organizer, language));
@@ -82,6 +82,8 @@ export class OrganizerService {
     newOrganizer.country = organizer[`country${capitalize(language)}`];
     newOrganizer.city = organizer[`city${capitalize(language)}`];
     newOrganizer.role = organizer[`role${capitalize(language)}`];
+
+    if (organizer.organizerRole) newOrganizer.organizerRole = organizer.organizerRole[`title${capitalize(language)}`];
 
     return newOrganizer;
   }
