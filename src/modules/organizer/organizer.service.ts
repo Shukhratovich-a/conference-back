@@ -42,6 +42,7 @@ export class OrganizerService {
     const [organizers, total] = await this.organizerRepository.findAndCount({
       take: limit,
       skip: (page - 1) * limit || 0,
+      relations: { organizerRole: true },
     });
 
     return {
@@ -51,20 +52,20 @@ export class OrganizerService {
   }
 
   async findWithContents(id: number) {
-    const organizer = await this.organizerRepository.findOne({ where: { id } });
+    const organizer = await this.organizerRepository.findOne({ where: { id }, relations: { organizerRole: true } });
     if (!organizer) return null;
 
     return organizer;
   }
 
   // CREATE
-  async create({ ...dto }: CreateOrganizerDto) {
-    return this.organizerRepository.save(this.organizerRepository.create({ ...dto }));
+  async create({ organizerRoleId, ...dto }: CreateOrganizerDto) {
+    return this.organizerRepository.save(this.organizerRepository.create({ organizerRole: { id: organizerRoleId }, ...dto }));
   }
 
   // UPDATE
-  async update({ ...dto }: UpdateOrganizerDto, id: number) {
-    return this.organizerRepository.save({ ...dto, id });
+  async update({ organizerRoleId, ...dto }: UpdateOrganizerDto, id: number) {
+    return this.organizerRepository.save({ organizerRole: { id: organizerRoleId }, ...dto, id });
   }
 
   // DELETE

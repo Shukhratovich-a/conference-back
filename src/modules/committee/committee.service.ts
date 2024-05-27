@@ -42,6 +42,7 @@ export class CommitteeService {
     const [committees, total] = await this.committeeRepository.findAndCount({
       take: limit,
       skip: (page - 1) * limit || 0,
+      relations: { committeeRole: true },
     });
 
     return {
@@ -51,7 +52,7 @@ export class CommitteeService {
   }
 
   async findWithContents(id: number) {
-    const committee = await this.committeeRepository.findOne({ where: { id } });
+    const committee = await this.committeeRepository.findOne({ where: { id }, relations: { committeeRole: true } });
     if (!committee) return null;
 
     return committee;
@@ -64,6 +65,8 @@ export class CommitteeService {
 
   // UPDATE
   async update({ committeeRoleId, ...dto }: UpdateCommitteeDto, id: number) {
+    console.log(committeeRoleId);
+
     return this.committeeRepository.save({ committeeRole: { id: committeeRoleId }, ...dto, id });
   }
 
