@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 
 import * as sharp from "sharp";
 import { extname, join } from "path";
-import { ensureDir, writeFile } from "fs-extra";
+import { ensureDir, writeFile, statSync, readdirSync } from "fs-extra";
 import { format } from "date-fns";
 
 import { FileElementResponse } from "./dto/file-element.dto";
@@ -11,6 +11,22 @@ import { MFile } from "./mfile.class";
 
 @Injectable()
 export class FileService {
+  async findFiles(dir: string, files: { id: number; name: string; download: string }[] = []) {
+    const fileList = readdirSync(join(process.cwd(), dir));
+
+    for (const file of fileList) {
+      const name = `${dir}/${file}`;
+
+      if (statSync(name).isDirectory()) {
+        this.findFiles(name, files);
+      } else {
+        files.push({ id: files.length, name: `/${name}`, download: process.env.HOST + `/${name}` });
+      }
+    }
+
+    return { data: files, total: files.length };
+  }
+
   async saveFile(file: MFile): Promise<FileElementResponse> {
     const dateFolder = format(new Date(), "yyyy-MM-dd");
     const uploadFolder = join(process.cwd(), "uploads", dateFolder);
