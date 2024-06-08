@@ -20,7 +20,7 @@ export class FileService {
       if (statSync(name).isDirectory()) {
         this.findFiles(name, files);
       } else {
-        files.push({ id: files.length, name: `/${name}`, download: process.env.HOST + `/${name}` });
+        files.push({ id: files.length, name: `/${name}`, download: process.env.HOST + `/file/download-file?file=/${name}` });
       }
     }
 
