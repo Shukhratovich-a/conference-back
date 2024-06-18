@@ -15,6 +15,7 @@ import { DateModule } from "./date/date.module";
 import { FeeModule } from "./fee/fee.module";
 import { SponsorModule } from "./sponsor/sponsor.module";
 import { SubmissionModule } from "./submission/submission.module";
+import { VenueModule } from "./venue/venue.module";
 import { AccommodationModule } from "./accommodation/accommodation.module";
 import { ContactModule } from "./contact/contact.module";
 import { ProgramModule } from "./program/program.module";
@@ -36,6 +37,7 @@ import { AdminModule } from "./admin/admin.module";
     FeeModule,
     SponsorModule,
     SubmissionModule,
+    VenueModule,
     AccommodationModule,
     ContactModule,
     ProgramModule,
