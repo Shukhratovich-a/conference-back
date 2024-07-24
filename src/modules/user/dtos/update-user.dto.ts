@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsOptional, IsString, MinLength } from "class-validator";
+import { IsBoolean, IsEmail, IsEnum, IsOptional, IsString, MinLength } from "class-validator";
 
 import { GenderEnum } from "@enums/gender.enum";
 
@@ -46,6 +46,10 @@ export class UpdateUserDto {
   @IsOptional()
   @IsString()
   postalCode: string;
+
+  @IsBoolean()
+  @IsOptional()
+  trip: boolean;
 
   @IsOptional()
   @IsString()
