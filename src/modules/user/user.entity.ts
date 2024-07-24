@@ -47,6 +47,9 @@ export class UserEntity extends BaseEntity {
   @Column({ name: "phone", type: "varchar" })
   phone: string;
 
+  @Column({ name: "trip", type: "boolean", default: false })
+  trip: boolean;
+
   @Column({ name: "email", type: "varchar", unique: true })
   email: string;
 

@@ -23,8 +23,8 @@ export class UserService {
   ) {}
 
   // FIND
-  async findAll(options?: GetAllDto) {
-    return this.userRepository.find({ where: { ...options } });
+  async findAll({ limit = 2, page = 1, ...options }: GetAllDto) {
+    return this.userRepository.find({ where: { ...options }, take: limit, skip: (page - 1) * limit });
   }
 
   async findById(id: number) {
