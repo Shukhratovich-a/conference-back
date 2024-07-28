@@ -24,7 +24,16 @@ export class UserService {
 
   // FIND
   async findAll({ limit = 2, page = 1, ...options }: GetAllDto) {
-    return this.userRepository.find({ where: { ...options }, take: limit, skip: (page - 1) * limit });
+    const [data, total] = await this.userRepository.findAndCount({
+      where: { ...options },
+      take: limit,
+      skip: (page - 1) * limit,
+    });
+
+    return {
+      data,
+      total,
+    };
   }
 
   async findById(id: number) {
