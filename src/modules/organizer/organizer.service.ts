@@ -23,7 +23,7 @@ export class OrganizerService {
   async findAll(language?: LanguageEnum) {
     const organizers = await this.organizerRepository.find({
       relations: { organizerRole: true },
-      order: { organizerRole: { id: "ASC" } },
+      order: { organizerRole: { id: "ASC" }, [`name${capitalize(language)}`]: "ASC" },
     });
     if (!organizers) return [];
 
