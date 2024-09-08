@@ -21,7 +21,10 @@ export class CommitteeService {
 
   // FIND
   async findAll(language?: LanguageEnum) {
-    const committees = await this.committeeRepository.find({ relations: { committeeRole: true } });
+    const committees = await this.committeeRepository.find({
+      relations: { committeeRole: true },
+      order: { nameEn: "ASC", nameRu: "ASC", nameUz: "ASC" },
+    });
     if (!committees) return [];
 
     const parsedCommittees: CommitteeDto[] = committees.map((committee) => this.parse(committee, language));

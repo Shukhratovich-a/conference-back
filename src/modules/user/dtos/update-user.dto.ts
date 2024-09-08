@@ -47,8 +47,8 @@ export class UpdateUserDto {
   @IsString()
   postalCode: string;
 
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   trip: boolean;
 
   @IsOptional()
