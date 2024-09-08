@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import { CommitteeRoleEntity } from "../committee-role/committee-role.entity";
 
-@Entity("committee", { orderBy: { nameEn: "ASC" } })
+@Entity("committee")
 export class CommitteeEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ name: "id" })
   id: number;
