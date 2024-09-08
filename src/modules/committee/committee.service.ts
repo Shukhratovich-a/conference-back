@@ -21,11 +21,7 @@ export class CommitteeService {
 
   // FIND
   async findAll(language?: LanguageEnum) {
-    const committees = await this.committeeRepository
-      .createQueryBuilder("committee")
-      .leftJoinAndSelect("committee.committeeRole", "role")
-      .orderBy("committee.nameEn", "ASC")
-      .getMany();
+    const committees = await this.committeeRepository.find({ relations: { committeeRole: true } });
     if (!committees) return [];
 
     const parsedCommittees: CommitteeDto[] = committees.map((committee) => this.parse(committee, language));
@@ -100,7 +96,9 @@ export class CommitteeService {
     return roles.map((role) => {
       return {
         title: role,
-        committees: committees.filter((committee) => committee.committeeRole === role),
+        committees: committees
+          .filter((committee) => committee.committeeRole === role)
+          .sort((a, b) => a.name.localeCompare(b.name)),
       };
     });
   }
