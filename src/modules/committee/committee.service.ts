@@ -98,7 +98,7 @@ export class CommitteeService {
         title: role,
         committees: committees
           .filter((committee) => committee.committeeRole === role)
-          .sort((a, b) => a.name.localeCompare(b.name)),
+          .sort((a, b) => a.name.trim().split(" ")[0].localeCompare(b.name.trim().split(" ")[0])),
       };
     });
   }
