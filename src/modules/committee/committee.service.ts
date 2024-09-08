@@ -23,7 +23,6 @@ export class CommitteeService {
   async findAll(language?: LanguageEnum) {
     const committees = await this.committeeRepository.find({
       relations: { committeeRole: true },
-      order: { [`name${capitalize(language)}`]: "ASC" },
     });
     if (!committees) return [];
 
