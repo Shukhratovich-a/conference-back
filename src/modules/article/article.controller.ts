@@ -31,7 +31,6 @@ export class ArticleController {
 
   // GET
   @Get("get-all")
-  @UseGuards(UserOrAdminJwtGuard)
   async getAll() {
     return this.articleService.findAll();
   }
