@@ -14,8 +14,10 @@ import {
 
 import { ISort } from "@/interfaces/sort.interface";
 import { IPagination } from "@/interfaces/pagination.interface";
+import { LanguageEnum } from "@/enums/language.enum";
 
 import { UserOrAdminJwtGuard } from "@guards/user-admin-jwt.guard";
+import { EnumValidationPipe } from "@/pipes/enum-validation.pipe";
 
 import { ArticleEntity } from "./article.entity";
 
@@ -31,8 +33,10 @@ export class ArticleController {
 
   // GET
   @Get("get-all")
-  async getAll() {
-    return this.articleService.findAll();
+  async getAll(
+    @Query("language", new EnumValidationPipe(LanguageEnum, { defaultValue: LanguageEnum.RU })) language: LanguageEnum,
+  ) {
+    return this.articleService.findAll(language);
   }
 
   @Get("get-by-id/:id")

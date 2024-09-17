@@ -3,12 +3,17 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
 
 import { Repository } from "typeorm";
+import { plainToClass } from "class-transformer";
 
 import { IPagination } from "@/interfaces/pagination.interface";
+import { LanguageEnum } from "@/enums/language.enum";
 import { ISort } from "@/interfaces/sort.interface";
+
+import { capitalize } from "@/utils/capitalize.utils";
 
 import { ArticleEntity } from "./article.entity";
 
+import { ArticleDto } from "./dtos/article.dto";
 import { CreateArticleDto } from "./dtos/create-article.dto";
 import { UpdateArticleDto } from "./dtos/update-article.dto";
 
@@ -20,8 +25,16 @@ export class ArticleService {
   ) {}
 
   // FIND
-  async findAll() {
-    return this.articleRepository.find({ relations: { user: true, section: true } });
+  async findAll(language: LanguageEnum) {
+    const articles = await this.articleRepository.find({
+      relations: { section: true, user: true },
+      where: { user: true, section: true },
+    });
+    if (!articles) return [];
+
+    const parsedArticles: ArticleDto[] = articles.map((article) => this.parse(article, language));
+
+    return parsedArticles;
   }
 
   async findById(id: number) {
@@ -79,5 +92,23 @@ export class ArticleService {
   // DELETE
   async delete(id: number) {
     return this.articleRepository.delete(id);
+  }
+
+  // PARSERS
+  parse(article: ArticleEntity, language: LanguageEnum) {
+    const newArticle: ArticleDto = plainToClass(ArticleDto, article, { excludeExtraneousValues: true });
+
+    if (article.section) {
+      newArticle.section = {
+        id: article.section.id,
+        title: article.section[`title${capitalize(language)}`],
+        createAt: article.section.createAt,
+        updateAt: article.section.updateAt,
+      };
+    }
+
+    if (article.user) newArticle.user = article.user;
+
+    return newArticle;
   }
 }
